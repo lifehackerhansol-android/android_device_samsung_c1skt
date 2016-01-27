@@ -40,6 +40,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     power.smdk4x12
 
+# Busybox
+PRODUCT_PACKAGES += \
+    busybox
+
 # Gps
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/gps.xml:system/etc/gps.xml \
