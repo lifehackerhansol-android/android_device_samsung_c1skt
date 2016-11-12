@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/samsung/i9300
+LOCAL_PATH := device/samsung/c1skt
 
 # Overlay
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
@@ -30,7 +30,7 @@ PRODUCT_COPY_FILES += \
 
 # Audio
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/tiny_hw.xml:system/etc/sound/m0
+    $(LOCAL_PATH)/configs/tiny_hw.xml:system/etc/sound/c1skt
 
 # Sensors
 PRODUCT_PACKAGES += \
@@ -110,4 +110,4 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml
 
-$(call inherit-product-if-exists, vendor/samsung/i9300/i9300-vendor.mk)
+$(call inherit-product-if-exists, vendor/samsung/c1skt/c1skt-vendor.mk)

@@ -26,26 +26,26 @@ LIBART_IMG_BASE := 0x30000000
 # RIL
 BOARD_PROVIDES_LIBRIL := true
 BOARD_MODEM_TYPE := xmm6262
-TARGET_SPECIFIC_HEADER_PATH += device/samsung/i9300/include
+TARGET_SPECIFIC_HEADER_PATH += device/samsung/c1skt/include
 BOARD_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
-BOARD_RIL_CLASS := ../../../device/samsung/i9300/ril
+BOARD_RIL_CLASS := ../../../device/samsung/c1skt/ril
 
 # Graphics
 TARGET_REQUIRES_SYNCHRONOUS_SETSURFACE := true
 
 # Bluetooth
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/i9300/bluetooth
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/c1skt/bluetooth
 
 # Kernel
 TARGET_KERNEL_SOURCE := kernel/samsung/smdk4412
-TARGET_KERNEL_CONFIG := lineageos_i9300_defconfig
+TARGET_KERNEL_CONFIG := lineageos_c1skt_defconfig
 
 # Cache
 BOARD_CACHEIMAGE_PARTITION_SIZE := 1048576
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := f2fs
 
 # Recovery
-TARGET_RECOVERY_FSTAB := device/samsung/i9300/rootdir/fstab.smdk4x12
+TARGET_RECOVERY_FSTAB := device/samsung/c1skt/rootdir/fstab.smdk4x12
 TARGET_RECOVERY_DENSITY := mdpi
 TARGET_USERIMAGES_USE_F2FS := true
 RECOVERY_FSTAB_VERSION := 2
@@ -55,7 +55,7 @@ TARGET_POWERHAL_VARIANT := pegasusq
 
 # Selinux
 BOARD_SEPOLICY_DIRS += \
-    device/samsung/i9300/selinux
+    device/samsung/c1skt/selinux
 
 # assert
-TARGET_OTA_ASSERT_DEVICE := m0,i9300,GT-I9300
+TARGET_OTA_ASSERT_DEVICE := m0,i9300,GT-I9300,c1skt,c1ktt,c1lgt,SHV-E210S,SHV-E210K,SHV-E210L
