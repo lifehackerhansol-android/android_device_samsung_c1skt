@@ -1,5 +1,5 @@
 #
-# system.prop for i9300
+# system.prop for SHV-E210S
 #
 
 config.disable_atlas=true
@@ -17,3 +17,8 @@ ro.egl.destroy_after_detach=true
 # Battery
 pm.sleep_mode=1
 ro.ril.disable.power.collapse=0
+
+# Ril
+ro.ril.telephony.mqanelements=6
+telephony.lteOnGsmDevice=1
+ro.telephony.default_network=9
