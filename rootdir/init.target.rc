@@ -95,6 +95,10 @@ on fs
 
 on boot
     chmod 0644 /proc/cmdline
+    chmod 0644 /proc/sys/net/ipv6/conf/rmnet0/autoconf
+    chmod 0644 /proc/sys/net/ipv6/conf/rmnet1/autoconf
+    chmod 0644 /proc/sys/net/ipv6/conf/rmnet2/autoconf
+    chmod 0644 /proc/sys/net/ipv6/conf/rmnet3/autoconf
 
 # rild
 service ril-daemon /system/bin/rild
