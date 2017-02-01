@@ -94,6 +94,8 @@ on fs
     swapon_all /fstab.smdk4x12
 
 on boot
+    chmod 0644 /proc/cmdline
+
 # cbd
 service cpboot-daemon /system/bin/cbd -d
     class main
