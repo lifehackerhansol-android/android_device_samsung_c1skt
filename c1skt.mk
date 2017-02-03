@@ -30,7 +30,9 @@ PRODUCT_COPY_FILES += \
 
 # Audio
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/tiny_hw.xml:system/etc/sound/c1skt
+    $(LOCAL_PATH)/configs/tiny_hw.xml:system/etc/sound/c1skt \
+    $(LOCAL_PATH)/configs/tiny_hw.xml:system/etc/sound/c1ktt \
+    $(LOCAL_PATH)/configs/tiny_hw.xml:system/etc/sound/c1lgt
 
 # Sensors
 PRODUCT_PACKAGES += \

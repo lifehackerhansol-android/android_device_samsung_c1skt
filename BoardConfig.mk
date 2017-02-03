@@ -40,6 +40,11 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/c1skt/bluetooth
 TARGET_KERNEL_SOURCE := kernel/samsung/smdk4412
 TARGET_KERNEL_CONFIG := lineageos_c1skt_defconfig
 
+# Init
+TARGET_INIT_VENDOR_LIB := libinit_c1
+TARGET_LIBINIT_MSM8974_DEFINES_FILE := device/samsung/c1skt/init/init_c1skt.cpp
+TARGET_UNIFIED_DEVICE := true
+
 # Cache
 BOARD_CACHEIMAGE_PARTITION_SIZE := 1048576
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := f2fs
