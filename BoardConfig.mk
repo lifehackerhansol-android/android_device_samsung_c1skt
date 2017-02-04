@@ -42,8 +42,9 @@ TARGET_KERNEL_CONFIG := lineageos_c1skt_defconfig
 
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_c1
-TARGET_LIBINIT_MSM8974_DEFINES_FILE := device/samsung/c1skt/init/init_c1skt.cpp
+TARGET_LIBINIT_C1_DEFINES_FILE := device/samsung/c1skt/init/init_c1skt.cpp
 TARGET_UNIFIED_DEVICE := true
+TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/c1skt/releasetools
 
 # Cache
 BOARD_CACHEIMAGE_PARTITION_SIZE := 1048576
