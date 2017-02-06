@@ -19,6 +19,7 @@ import re
 def InstallEnd_SetSpecificDeviceConfigs(info):
     info.script.Mount("/system");
     info.script.AppendExtra('run_program("/system/bin/modem.sh");');
+    info.script.AppendExtra('run_program("/system/bin/init.sh");');
     info.script.Unmount("/system");
     return
 

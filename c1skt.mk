@@ -57,6 +57,7 @@ PRODUCT_PACKAGES += \
 # OTA
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/releasetools/modem.sh:system/bin/modem.sh \
+    $(LOCAL_PATH)/releasetools/init.sh:system/bin/init.sh \
     $(LOCAL_PATH)/releasetools/kt_modem_ol2.bin:system/bin/kt_modem_ol2.bin \
     $(LOCAL_PATH)/releasetools/skt_modem_ol2.bin:system/bin/skt_modem_ol2.bin
 
