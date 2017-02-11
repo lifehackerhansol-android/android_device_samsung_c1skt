@@ -35,10 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.android.internal.telephony.gsm.SmsBroadcastConfigInfo;
-import com.android.internal.telephony.cdma.CdmaInformationRecords;
-import com.android.internal.telephony.cdma.CdmaInformationRecords.CdmaSignalInfoRec;
-import com.android.internal.telephony.cdma.SignalToneUtil;
+import android.telephony.SmsManager;
 import com.android.internal.telephony.uicc.IccCardApplicationStatus;
 import com.android.internal.telephony.uicc.IccCardStatus;
 import com.android.internal.telephony.uicc.IccUtils;
@@ -133,11 +130,58 @@ public class SamsungExynos4RIL extends RIL implements CommandsInterface {
     /* private Message mPendingGetSimStatus; */
 
     private AudioManager mAudioManager;
-    private boolean setPreferredNetworkTypeSeen = false;
 
-    public SamsungExynos4RIL(Context context, int networkMode, int cdmaSubscription, Integer instanceId) {
-        super(context, networkMode, cdmaSubscription, instanceId);
+    public SamsungExynos4RIL(Context context, int preferredNetworkType,
+            int cdmaSubscription, Integer instanceId) {
+        super(context, preferredNetworkType, cdmaSubscription, instanceId);
         mAudioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+    }
+
+    public SamsungExynos4RIL(Context context, int networkMode,
+            int cdmaSubscription) {
+        super(context, networkMode, cdmaSubscription);
+        mAudioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+    }
+
+     /**
+     *  Translates EF_SMS status bits to a status value compatible with
+     *  SMS AT commands.  See TS 27.005 3.1.
+     */
+    private int translateStatus(int status) {
+        switch(status & 0x7) {
+            case SmsManager.STATUS_ON_ICC_READ:
+                return 1;
+            case SmsManager.STATUS_ON_ICC_UNREAD:
+                return 0;
+            case SmsManager.STATUS_ON_ICC_SENT:
+                return 3;
+            case SmsManager.STATUS_ON_ICC_UNSENT:
+                return 2;
+        }
+        
+        // Default to READ.
+        return 1;
+    }
+    
+    @Override
+    public void writeSmsToSim(int status, String smsc, String pdu, Message response) {
+        status = translateStatus(status);
+        
+        RILRequest rr = RILRequest.obtain(RIL_REQUEST_WRITE_SMS_TO_SIM,
+                                          response);
+        
+        rr.mParcel.writeInt(status);
+        rr.mParcel.writeString(pdu);
+        rr.mParcel.writeString(smsc);
+        rr.mParcel.writeInt(255);     /* Samsung */
+        
+        if (RILJ_LOGV) {
+            riljLog(rr.serialString() + "> "
+                    + requestToString(rr.mRequest)
+                    + " " + status);
+        }
+        
+        send(rr);
     }
     
     static String
@@ -230,6 +274,30 @@ public class SamsungExynos4RIL extends RIL implements CommandsInterface {
 
     }
 
+    private void constructGsmSendSmsRilRequest(RILRequest rr, String smscPDU, String pdu) {
+        rr.mParcel.writeInt(4);
+        rr.mParcel.writeString(smscPDU);
+        rr.mParcel.writeString(pdu);
+        rr.mParcel.writeString(Integer.toString(0));
+        rr.mParcel.writeString(Integer.toString(1));
+    }
+
+    /**
+     * The RIL can't handle the RIL_REQUEST_SEND_SMS_EXPECT_MORE
+     * request properly, so we use RIL_REQUEST_SEND_SMS instead.
+     */
+    @Override
+    public void sendSMSExpectMore(String smscPDU, String pdu, Message result) {
+        Rlog.v(RILJ_LOG_TAG, "XMM7260: sendSMSExpectMore");
+        
+        RILRequest rr = RILRequest.obtain(RIL_REQUEST_SEND_SMS, result);
+        constructGsmSendSmsRilRequest(rr, smscPDU, pdu);
+        
+        if (RILJ_LOGD) riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
+        
+        send(rr);
+    }
+
     @Override
     protected void
     processUnsolicited (Parcel p, int type) {
@@ -273,12 +341,6 @@ public class SamsungExynos4RIL extends RIL implements CommandsInterface {
                 if (mCatSendSmsResultRegistrant != null) {
                     mCatSendSmsResultRegistrant.notifyRegistrant(
                                                                  new AsyncResult (null, ret, null));
-                }
-                break;
-            case RIL_UNSOL_RIL_CONNECTED:
-                if (!setPreferredNetworkTypeSeen) {
-                    Rlog.v(RILJ_LOG_TAG, "SamsungExynos4RIL: connected, setting network type to " + mPreferredNetworkType);
-                    setPreferredNetworkType(mPreferredNetworkType, null);
                 }
                 break;
             // SAMSUNG STATES                
@@ -391,19 +453,5 @@ public class SamsungExynos4RIL extends RIL implements CommandsInterface {
             response.sendToTarget();
         }
     }
-
-    @Override
-    public void setPreferredNetworkType(int networkType , Message response) {
-        riljLog("SamsungExynos4RIL: setPreferredNetworkType: " + networkType);
-
-        if (!setPreferredNetworkTypeSeen) {
-            riljLog("SamsungExynos4RIL: Need to reboot modem!");
-            setRadioPower(false, null);
-            setPreferredNetworkTypeSeen = true;
-        }
-
-        super.setPreferredNetworkType(networkType, response);
-    }
-
 }
 
