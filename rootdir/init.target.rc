@@ -113,7 +113,7 @@ service ril-daemon /system/bin/rild
     onrestart restart cpboot-daemon
 
 # cbd
-service cpboot-daemon /system/bin/cbd -d
+service cpboot-daemon /system/bin/cbd -d -t cmc221 -b d -m d
     class main
     user root
     group radio cache inet misc audio sdcard_rw log
